@@ -1,3 +1,4 @@
+using System;
 using AliaSQL.Core;
 using AliaSQL.Core.Model;
 using AliaSQL.Core.Services;
@@ -13,7 +14,7 @@ namespace AliaSQL.UnitTests
 		[Test]
 		public void Manages_database()
 		{
-			var settings = new ConnectionSettings("server", "db", true, null, null);
+      var settings = new ConnectionSettings("server", "db", true, null, null);
             var scriptDirectory = @"c:\scripts"; 
             var taskAttributes = new TaskAttributes(settings, scriptDirectory);
             taskAttributes.RequestedDatabaseAction= RequestedDatabaseAction.Create;

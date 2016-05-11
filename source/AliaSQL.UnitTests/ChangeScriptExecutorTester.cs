@@ -111,7 +111,7 @@ namespace AliaSQL.UnitTests
 
 		private ConnectionSettings getConnectionSettings()
 		{
-			return new ConnectionSettings(String.Empty, String.Empty, false, String.Empty, String.Empty);
+      return new ConnectionSettings(String.Empty, String.Empty, false, String.Empty, String.Empty);
 		}
 	}
 }

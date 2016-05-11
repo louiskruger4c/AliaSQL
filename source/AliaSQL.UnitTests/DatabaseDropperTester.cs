@@ -14,7 +14,7 @@ namespace AliaSQL.UnitTests
 		[Test]
 		public void Drops_database()
 		{
-			var settings = new ConnectionSettings("server", "db", true, null, null);
+      var settings = new ConnectionSettings("server", "db", true, null, null);
             var taskAttributes = new TaskAttributes(settings, null);
 
 			var mocks = new MockRepository();
@@ -43,7 +43,7 @@ namespace AliaSQL.UnitTests
         [Test]
         public void Drops_Azure_database_without_dropping_connections()
         {
-            var settings = new ConnectionSettings("server", "db", true, null, null);
+          var settings = new ConnectionSettings("server", "db", true, null, null);
             var taskAttributes = new TaskAttributes(settings, null);
 
             var mocks = new MockRepository();
@@ -71,7 +71,7 @@ namespace AliaSQL.UnitTests
 		[Test]
 		public void Should_not_fail_if_datebase_does_not_exist()
 		{
-			var settings = new ConnectionSettings("server", "db", true, null, null);
+      var settings = new ConnectionSettings("server", "db", true, null, null);
             var taskAttributes = new TaskAttributes(settings, null);
 
 			var mocks = new MockRepository();

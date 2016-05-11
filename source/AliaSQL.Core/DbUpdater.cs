@@ -43,11 +43,15 @@ namespace AliaSQL.Core
         /// <para>-Script directory path must exist</para>
         /// <para>Returns an object with a success boolean and a result string</para>
         /// </summary>
-        /// <param name="connectionString"></param>
-        /// <param name="action"></param>
-        /// <param name="scriptDirectory"></param>
-        /// <returns>Returns an object with a success boolean and a result string</returns>
-        public AliaSqlResult UpdateDatabase(string connectionString, RequestedDatabaseAction action = RequestedDatabaseAction.Update, string scriptDirectory = "")
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="scriptTimeout">The script timeout.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="scriptDirectory">The script directory.</param>
+        /// <returns>
+        /// Returns an object with a success boolean and a result string
+        /// </returns>
+        /// <exception cref="ArgumentException">There are no scripts in the defined data directory.</exception>
+        public AliaSqlResult UpdateDatabase(string connectionString, TimeSpan scriptTimeout, RequestedDatabaseAction action = RequestedDatabaseAction.Update, string scriptDirectory = "")
         {
             if (scriptDirectory == "")
             {
@@ -59,7 +63,7 @@ namespace AliaSQL.Core
                 throw new ArgumentException("There are no scripts in the defined data directory.");
             }
 
-            if (action == RequestedDatabaseAction.Update && !PendingChanges(connectionString, scriptDirectory).Any())
+            if (action == RequestedDatabaseAction.Update && !PendingChanges(connectionString, scriptTimeout, scriptDirectory).Any())
             {
                 return new AliaSqlResult { Result = "No pending changes", Success = true };
             }
@@ -67,7 +71,7 @@ namespace AliaSQL.Core
             var result = new AliaSqlResult { Success = true };
             var manager = new SqlDatabaseManager();
 
-            var taskAttributes = new TaskAttributes(_connectionStringGenerator.GetConnectionSettings(connectionString), scriptDirectory)
+            var taskAttributes = new TaskAttributes(_connectionStringGenerator.GetConnectionSettings(connectionString, scriptTimeout), scriptDirectory)
             {
                 RequestedDatabaseAction = action,
             };
@@ -103,10 +107,14 @@ namespace AliaSQL.Core
         /// <para>-Script directory path must exist</para>
         /// <para>Returns a list of string with names of pending sql scripts</para>
         /// </summary>
-        /// <param name="connectionString"></param>
-        /// <param name="scriptDirectory"></param>
-        /// <returns>Returns a list of string with names of pending sql scripts</returns>
-        public List<string> PendingChanges(string connectionString, string scriptDirectory = "")
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="scriptTimeout">The script timeout.</param>
+        /// <param name="scriptDirectory">The script directory.</param>
+        /// <returns>
+        /// Returns a list of string with names of pending sql scripts
+        /// </returns>
+        /// <exception cref="ArgumentException">There are no scripts in the defined data directory.</exception>
+        public List<string> PendingChanges(string connectionString, TimeSpan scriptTimeout, string scriptDirectory = "")
         {
             if (scriptDirectory == "")
             {
@@ -118,7 +126,7 @@ namespace AliaSQL.Core
                 throw new ArgumentException("There are no scripts in the defined data directory.");
             }
 
-            if (!DatabaseExists(connectionString))
+            if (!DatabaseExists(connectionString, scriptTimeout))
             {
                 var result = new List<string>();
                 result.Add("Database does not exist");
@@ -130,7 +138,7 @@ namespace AliaSQL.Core
             allfiles.AddRange(filelocator.GetSqlFilenames(scriptDirectory, "Create").ToList());
             allfiles.AddRange(filelocator.GetSqlFilenames(scriptDirectory, "Update").ToList());
             allfiles.AddRange(filelocator.GetSqlFilenames(scriptDirectory, "Everytime").ToList());
-            var executedfiles = _queryExecutor.GetExecutedScripts(_connectionStringGenerator.GetConnectionSettings(connectionString));
+            var executedfiles = _queryExecutor.GetExecutedScripts(_connectionStringGenerator.GetConnectionSettings(connectionString, scriptTimeout));
             return allfiles.Select(f => f.Replace(Path.GetDirectoryName(f) + "\\", "")).Except(executedfiles).ToList();
         }
 
@@ -140,10 +148,14 @@ namespace AliaSQL.Core
         /// <para>-Script directory path must exist</para>
         /// <para>Returns a list of string with names of pending test data sql scripts</para>
         /// </summary>
-        /// <param name="connectionString"></param>
-        /// <param name="scriptDirectory"></param>
-        /// <returns>RReturns a list of string with names of pending test data sql scripts</returns>
-        public List<string> PendingTestData(string connectionString, string scriptDirectory = "")
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="scriptTimeout">The script timeout.</param>
+        /// <param name="scriptDirectory">The script directory.</param>
+        /// <returns>
+        /// RReturns a list of string with names of pending test data sql scripts
+        /// </returns>
+        /// <exception cref="ArgumentException">There are no scripts in the defined data directory.</exception>
+        public List<string> PendingTestData(string connectionString, TimeSpan scriptTimeout, string scriptDirectory = "")
         {
             if (scriptDirectory == "")
             {
@@ -155,7 +167,7 @@ namespace AliaSQL.Core
                 throw new ArgumentException("There are no scripts in the defined data directory.");
             }
 
-            if (!DatabaseExists(connectionString))
+            if (!DatabaseExists(connectionString, scriptTimeout))
             {
                 var result = new List<string>();
                 result.Add("Database does not exist");
@@ -165,28 +177,34 @@ namespace AliaSQL.Core
             var filelocator = new SqlFileLocator();
             var allfiles = new List<string>();
             allfiles.AddRange(filelocator.GetSqlFilenames(scriptDirectory, "TestData").ToList());
-            var executedfiles = _queryExecutor.GetExecutedTestDataScripts(_connectionStringGenerator.GetConnectionSettings(connectionString));
+            var executedfiles = _queryExecutor.GetExecutedTestDataScripts(_connectionStringGenerator.GetConnectionSettings(connectionString, scriptTimeout));
             return allfiles.Select(f => f.Replace(Path.GetDirectoryName(f) + "\\", "")).Except(executedfiles).ToList();
         }
 
         /// <summary>
-        /// <para>Returns a boolean if the target database exists</para>
+        /// Returns a boolean if the target database exists
         /// </summary>
-        /// <param name="connectionString"></param>
-        /// <returns>Returns a boolean if the target database exists</returns>
-        public bool DatabaseExists(string connectionString)
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="scriptTimeout">The script timeout.</param>
+        /// <returns>
+        /// Returns a boolean if the target database exists
+        /// </returns>
+        public bool DatabaseExists(string connectionString, TimeSpan scriptTimeout)
         {
-            return _queryExecutor.CheckDatabaseExists(_connectionStringGenerator.GetConnectionSettings(connectionString));
+            return _queryExecutor.CheckDatabaseExists(_connectionStringGenerator.GetConnectionSettings(connectionString, scriptTimeout));
         }
 
         /// <summary>
         /// Returns database version representing the number of scripts that have been ran against the database
         /// </summary>
-        /// <param name="connectionString"></param>
-        /// <returns>Returns database version representing the number of scripts that have been ran against the database</returns>
-        public int DatabaseVersion(string connectionString)
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="scriptTimeout">The script timeout.</param>
+        /// <returns>
+        /// Returns database version representing the number of scripts that have been ran against the database
+        /// </returns>
+        public int DatabaseVersion(string connectionString, TimeSpan scriptTimeout)
         {
-            return _queryExecutor.DatabaseVersion(_connectionStringGenerator.GetConnectionSettings(connectionString));
+            return _queryExecutor.DatabaseVersion(_connectionStringGenerator.GetConnectionSettings(connectionString, scriptTimeout));
         }
     }
 }

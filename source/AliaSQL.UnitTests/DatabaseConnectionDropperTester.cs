@@ -1,3 +1,4 @@
+using System;
 using AliaSQL.Core;
 using AliaSQL.Core.Model;
 using AliaSQL.Core.Services;
@@ -16,7 +17,7 @@ namespace AliaSQL.UnitTests
 			string assembly = SqlDatabaseManager.SQL_FILE_ASSEMBLY;
 			string sqlFile = string.Format(SqlDatabaseManager.SQL_FILE_TEMPLATE, "DropConnections");
 
-			ConnectionSettings settings = new ConnectionSettings("server", "MyDatabase", true, null, null);
+      ConnectionSettings settings = new ConnectionSettings("server", "MyDatabase", true, null, null);
 
 			MockRepository mocks = new MockRepository();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -41,7 +42,7 @@ namespace AliaSQL.Core.Services.Impl
         using (var command = new SqlCommand())
         {
           command.Connection = connection;
-          command.CommandTimeout = 0;
+          command.CommandTimeout = settings.ScriptTimeout == TimeSpan.MaxValue ? 0 : Convert.ToInt32(settings.ScriptTimeout.TotalSeconds);
           var scripts = SplitSqlStatements(sql);
 
 
@@ -72,8 +73,7 @@ namespace AliaSQL.Core.Services.Impl
     public void ExecuteNonQueryTransactional(ConnectionSettings settings, string sql)
     {
       //do all this in a single transaction
-      var transactionOptions = new TransactionOptions { Timeout = TimeSpan.MaxValue };
-
+      var transactionOptions = new TransactionOptions { Timeout = settings.ScriptTimeout };
       using (var scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
       {
         string connectionString = _connectionStringGenerator.GetConnectionString(settings, true);
@@ -83,7 +83,7 @@ namespace AliaSQL.Core.Services.Impl
           using (var command = new SqlCommand())
           {
             command.Connection = connection;
-            command.CommandTimeout = 0;
+            command.CommandTimeout = settings.ScriptTimeout == TimeSpan.MaxValue ? 0 : Convert.ToInt32(settings.ScriptTimeout.TotalSeconds);
             var scripts = SplitSqlStatements(sql);
             foreach (var splitScript in scripts)
             {

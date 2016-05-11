@@ -1,4 +1,6 @@
-﻿namespace AliaSQL.Core.Model
+﻿using System;
+
+namespace AliaSQL.Core.Model
 {
 	public class ConnectionSettings
 	{
@@ -7,15 +9,22 @@
 		private string _password;
 		private string _server;
 		private string _username;
+	  private TimeSpan _scriptTimeout;
+
+	  public ConnectionSettings(string server, string database, bool integratedAuthentication, string username,
+	    string password) : this(server, database, integratedAuthentication, username, password, TimeSpan.MaxValue)
+	  {
+	  }
 
 		public ConnectionSettings(string server, string database, bool integratedAuthentication, string username,
-		                          string password)
+		                          string password, TimeSpan scriptTimeout)
 		{
 			_server = server;
 			_database = database;
 			_integratedAuthentication = integratedAuthentication;
 			_username = username;
 			_password = password;
+		  _scriptTimeout = scriptTimeout;
 		}
 
 		public string Database
@@ -42,6 +51,11 @@
 		{
 			get { return _username; }
 		}
+
+	  public TimeSpan ScriptTimeout
+	  {
+	    get { return _scriptTimeout; }
+	  }
 
 		public override bool Equals(object obj)
 		{

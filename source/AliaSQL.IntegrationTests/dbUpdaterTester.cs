@@ -22,10 +22,10 @@ namespace AliaSQL.IntegrationTests
             //arrange
             string scriptsDirectory = Path.Combine("Scripts", GetType().Name.Replace("Tester", ""));
             var settings = new ConnectionSettings(".\\sqlexpress", "aliasqltest", true, null, null);
-            new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), RequestedDatabaseAction.Drop, scriptsDirectory);
+            new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue, RequestedDatabaseAction.Drop, scriptsDirectory);
 
             //act
-            bool success = new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), RequestedDatabaseAction.Create, scriptsDirectory).Success;
+            bool success = new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue, RequestedDatabaseAction.Create, scriptsDirectory).Success;
 
 
             //assert
@@ -50,14 +50,14 @@ namespace AliaSQL.IntegrationTests
             //arrange
             string scriptsDirectory = Path.Combine("Scripts", GetType().Name.Replace("Tester", ""));
             var settings = new ConnectionSettings(".\\sqlexpress", "aliasqltest", true, null, null);
-            new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), RequestedDatabaseAction.Drop, scriptsDirectory);
+            new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue, RequestedDatabaseAction.Drop, scriptsDirectory);
 
             //act
-            bool dbexistsbefore = new DbUpdater().DatabaseExists(new ConnectionStringGenerator().GetConnectionString(settings, true));
+            bool dbexistsbefore = new DbUpdater().DatabaseExists(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue);
 
-            bool updated = new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), RequestedDatabaseAction.Update, scriptsDirectory).Success;
+            bool updated = new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue, RequestedDatabaseAction.Update, scriptsDirectory).Success;
 
-            bool dbexistsafter = new DbUpdater().DatabaseExists(new ConnectionStringGenerator().GetConnectionString(settings, true));
+            bool dbexistsafter = new DbUpdater().DatabaseExists(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue);
            
             //assert
             dbexistsbefore.ShouldEqual(false);
@@ -71,11 +71,11 @@ namespace AliaSQL.IntegrationTests
             //arrange
             string scriptsDirectory = Path.Combine("Scripts", GetType().Name.Replace("Tester", ""));
             var settings = new ConnectionSettings(".\\sqlexpress", "aliasqltest", true, null, null);
-            new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), RequestedDatabaseAction.Drop, scriptsDirectory);
-            bool updated = new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), RequestedDatabaseAction.Update, scriptsDirectory).Success;
+            new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue, RequestedDatabaseAction.Drop, scriptsDirectory);
+            bool updated = new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue, RequestedDatabaseAction.Update, scriptsDirectory).Success;
 
             //act
-            List<string> pendingChanges = new DbUpdater().PendingChanges(new ConnectionStringGenerator().GetConnectionString(settings, true), scriptsDirectory.Replace("DbUpdater", "NewEverytimeScript"));
+            List<string> pendingChanges = new DbUpdater().PendingChanges(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue, scriptsDirectory.Replace("DbUpdater", "NewEverytimeScript"));
 
             //assert
             pendingChanges.Count.ShouldEqual(1);
@@ -88,13 +88,13 @@ namespace AliaSQL.IntegrationTests
             //arrange
             string scriptsDirectory = Path.Combine("Scripts", GetType().Name.Replace("Tester", ""));
             var settings = new ConnectionSettings(".\\sqlexpress", "aliasqltest", true, null, null);
-            new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), RequestedDatabaseAction.Drop, scriptsDirectory);
-            int dbversionbeforeupdate = new DbUpdater().DatabaseVersion(new ConnectionStringGenerator().GetConnectionString(settings, true));
+            new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue, RequestedDatabaseAction.Drop, scriptsDirectory);
+            int dbversionbeforeupdate = new DbUpdater().DatabaseVersion(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue);
 
-            bool updated = new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), RequestedDatabaseAction.Update, scriptsDirectory).Success;
+            bool updated = new DbUpdater().UpdateDatabase(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue, RequestedDatabaseAction.Update, scriptsDirectory).Success;
 
             //act
-            int dbversionafterupdate = new DbUpdater().DatabaseVersion(new ConnectionStringGenerator().GetConnectionString(settings, true));
+            int dbversionafterupdate = new DbUpdater().DatabaseVersion(new ConnectionStringGenerator().GetConnectionString(settings, true), TimeSpan.MaxValue);
 
             //assert
             dbversionbeforeupdate.ShouldEqual(0);

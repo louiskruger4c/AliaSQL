@@ -17,7 +17,7 @@ namespace AliaSQL.UnitTests
         [Test]
         public void LogsTestData()
         {
-            var settings = new ConnectionSettings("server", "db", true, null, null);
+          var settings = new ConnectionSettings("server", "db", true, null, null);
             var taskAttributes = new TaskAttributes(settings, "c:\\scripts");
             taskAttributes.RequestedDatabaseAction = RequestedDatabaseAction.TestData;
             var mocks = new MockRepository();
@@ -42,7 +42,7 @@ namespace AliaSQL.UnitTests
         [Test]
         public void CorrectlyExecutesScriptIfItHasntAlreadyBeenExecuted()
         {
-            var settings = new ConnectionSettings("server", "db", true, null, null);
+          var settings = new ConnectionSettings("server", "db", true, null, null);
             string scriptFile = @"c:\scripts\TestData\01_Test.sql";
             string fileContents = "file contents...";
 

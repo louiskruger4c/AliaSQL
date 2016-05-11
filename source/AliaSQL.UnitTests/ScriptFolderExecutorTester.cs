@@ -14,7 +14,7 @@ namespace AliaSQL.UnitTests
 		[Test]
 		public void Executes_all_the_scripts_within_a_folder()
 		{
-			var settings = new ConnectionSettings("server", "db", true, null, null);
+      var settings = new ConnectionSettings("server", "db", true, null, null);
             var sqlFiles = new[] { "c:\\scripts\\Update\\001.sql", "c:\\scripts\\Update\\002_data_.sql", "c:\\scripts\\Update\\003.sql" };
             var taskAttributes = new TaskAttributes(settings, "c:\\scripts")
                                      {

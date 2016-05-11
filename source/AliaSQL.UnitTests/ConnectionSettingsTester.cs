@@ -1,3 +1,4 @@
+using System;
 using AliaSQL.Core.Model;
 using NUnit.Framework;
 
@@ -21,8 +22,8 @@ namespace AliaSQL.UnitTests
 		[Test]
 		public void ProperlyComparesTwoIdenticalConnectionSettings()
 		{
-			ConnectionSettings settings1 = new ConnectionSettings("server", "database", true, "username", "password");
-			ConnectionSettings settings2 = new ConnectionSettings("server", "database", true, "username", "password");
+      ConnectionSettings settings1 = new ConnectionSettings("server", "database", true, "username", "password");
+      ConnectionSettings settings2 = new ConnectionSettings("server", "database", true, "username", "password");
 			
 			Assert.AreEqual(settings1, settings2);
 		}
@@ -30,8 +31,8 @@ namespace AliaSQL.UnitTests
 		[Test]
 		public void ProperlyComparesTwoNonIdenticalConnectionSettings()
 		{
-			ConnectionSettings settings1 = new ConnectionSettings("server", "database", true, "username", "password");
-			ConnectionSettings settings2 = new ConnectionSettings("server1", "database", true, "username", "password");
+      ConnectionSettings settings1 = new ConnectionSettings("server", "database", true, "username", "password");
+      ConnectionSettings settings2 = new ConnectionSettings("server1", "database", true, "username", "password");
 
 			Assert.AreNotEqual(settings1, settings2);
 		}
@@ -39,7 +40,7 @@ namespace AliaSQL.UnitTests
 		[Test]
 		public void Calculates_correct_hash_code()
 		{
-			ConnectionSettings settings1 = new ConnectionSettings("Server", "Database", true, "Username", "Password");
+      ConnectionSettings settings1 = new ConnectionSettings("Server", "Database", true, "Username", "Password");
 			int expectedHashCode = "ServerDatabaseUsernamePasswordTrue".GetHashCode();
 			Assert.That(settings1.GetHashCode(), Is.EqualTo(expectedHashCode));
 		}

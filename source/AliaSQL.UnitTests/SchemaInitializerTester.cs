@@ -18,7 +18,7 @@ namespace AliaSQL.UnitTests
 			string sqlFile = string.Format(AliaSQL.Core.Services.Impl.SqlDatabaseManager.SQL_FILE_TEMPLATE, "CreateSchema");
 
 			ConnectionSettings settings =
-				new ConnectionSettings(String.Empty, String.Empty, false, String.Empty, String.Empty);
+        new ConnectionSettings(String.Empty, String.Empty, false, String.Empty, String.Empty);
 			string sqlScript = "SQL script...";
 
 			MockRepository mocks = new MockRepository();

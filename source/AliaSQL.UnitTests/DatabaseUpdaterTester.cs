@@ -14,7 +14,7 @@ namespace AliaSQL.UnitTests
 		[Test]
 		public void Updates_database()
 		{
-			var settings = new ConnectionSettings("server", "db", true, null, null);
+      var settings = new ConnectionSettings("server", "db", true, null, null);
             var taskAttributes = new TaskAttributes(settings, "c:\\scripts");
             taskAttributes.RequestedDatabaseAction = RequestedDatabaseAction.Update;
 			var mocks = new MockRepository();

@@ -1,3 +1,4 @@
+using System;
 using AliaSQL.Core;
 using AliaSQL.Core.Model;
 using AliaSQL.Core.Services;
@@ -13,8 +14,8 @@ namespace AliaSQL.UnitTests
 		public void Creates_initial_log_message_for_database_rebuild()
 		{
 			ILogMessageGenerator generator = new LogMessageGenerator();
-            
-			var settings = new ConnectionSettings("server", "db", true, null, null);
+
+      var settings = new ConnectionSettings("server", "db", true, null, null);
 		    var taskAttributes = new TaskAttributes(settings, "c:\\scripts") {RequestedDatabaseAction = RequestedDatabaseAction.Rebuild};
 			string message = generator.GetInitialMessage(taskAttributes);
 
@@ -26,7 +27,7 @@ namespace AliaSQL.UnitTests
 		{
 			ILogMessageGenerator generator = new LogMessageGenerator();
 
-			var settings = new ConnectionSettings("server", "db", true, null, null);
+      var settings = new ConnectionSettings("server", "db", true, null, null);
             var taskAttributes = new TaskAttributes(settings, "c:\\scripts");
             taskAttributes.RequestedDatabaseAction= RequestedDatabaseAction.Create;
 			string message = generator.GetInitialMessage(taskAttributes);
@@ -39,7 +40,7 @@ namespace AliaSQL.UnitTests
 		{
 			ILogMessageGenerator generator = new LogMessageGenerator();
 
-			var settings = new ConnectionSettings("server", "db", true, null, null);
+      var settings = new ConnectionSettings("server", "db", true, null, null);
             var taskAttributes = new TaskAttributes(settings, "c:\\scripts") {RequestedDatabaseAction = RequestedDatabaseAction.Update};
 			string message = generator.GetInitialMessage(taskAttributes);
 
@@ -51,7 +52,7 @@ namespace AliaSQL.UnitTests
 		{
 			ILogMessageGenerator generator = new LogMessageGenerator();
 
-			var settings = new ConnectionSettings("server", "db", true, null, null);
+      var settings = new ConnectionSettings("server", "db", true, null, null);
             var taskAttributes = new TaskAttributes(settings, "c:\\scripts") {RequestedDatabaseAction = RequestedDatabaseAction.Drop};
 			string message = generator.GetInitialMessage(taskAttributes);
 

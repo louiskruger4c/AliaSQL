@@ -61,6 +61,9 @@
     <Content Include="Scripts\DbUpdater\Update\0001-Update.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\LongRunningScript\Update\LongRunningScript.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\NewRunAlwaysScriptShouldRun\RunAlways\TestScript.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -73,6 +76,7 @@
     <Compile Include="ChangedEverytimeScriptShouldRunTester.cs" />
     <Compile Include="ChangedRunAlwaysScriptShouldRunTester.cs" />
     <Compile Include="DbUpdaterTester.cs" />
+    <Compile Include="LongRunningScriptTester.cs" />
     <Compile Include="NewRunAlwaysScriptShouldRunTester.cs" />
     <Compile Include="OldEverytimeScriptShouldNotRunTester.cs" />
     <Compile Include="NewEverytimeScriptTester.cs" />

@@ -1,3 +1,4 @@
+using System;
 using AliaSQL.Core.Model;
 using AliaSQL.Core.Services;
 using AliaSQL.Core.Services.Impl;
@@ -13,7 +14,7 @@ namespace AliaSQL.UnitTests
 		{
 			IConnectionStringGenerator generator = new ConnectionStringGenerator();
 
-			ConnectionSettings settings = new ConnectionSettings("server", "db", true, string.Empty, string.Empty);
+      ConnectionSettings settings = new ConnectionSettings("server", "db", true, string.Empty, string.Empty);
 			string connString = generator.GetConnectionString(settings, true);
 			
 			Assert.AreEqual("Data Source=server;Initial Catalog=db;Integrated Security=True;", connString);
@@ -24,7 +25,7 @@ namespace AliaSQL.UnitTests
 		{
 			IConnectionStringGenerator generator = new ConnectionStringGenerator();
 
-			ConnectionSettings settings = new ConnectionSettings("server", "db", true, string.Empty, string.Empty);
+      ConnectionSettings settings = new ConnectionSettings("server", "db", true, string.Empty, string.Empty);
 			string connString = generator.GetConnectionString(settings, false);
 			
 			Assert.AreEqual("Data Source=server;Integrated Security=True;", connString);
@@ -35,7 +36,7 @@ namespace AliaSQL.UnitTests
 		{
 			IConnectionStringGenerator generator = new ConnectionStringGenerator();
 
-			ConnectionSettings settings = new ConnectionSettings("server", "db", false, "usr", "pwd");
+      ConnectionSettings settings = new ConnectionSettings("server", "db", false, "usr", "pwd");
 			string connString = generator.GetConnectionString(settings, true);
 			
 			Assert.AreEqual("Data Source=server;Initial Catalog=db;User ID=usr;Password=pwd;", connString);
@@ -46,7 +47,7 @@ namespace AliaSQL.UnitTests
 		{
 			IConnectionStringGenerator generator = new ConnectionStringGenerator();
 
-			ConnectionSettings settings = new ConnectionSettings("server", "db", false, "usr", "pwd");
+      ConnectionSettings settings = new ConnectionSettings("server", "db", false, "usr", "pwd");
 			string connString = generator.GetConnectionString(settings, false);
 
 			Assert.AreEqual("Data Source=server;User ID=usr;Password=pwd;", connString);
